@@ -140,7 +140,7 @@ const createSwitchUnit = (name, x, y, width, height, labelPlacement) => {
   }
 
   // LOAD INTERNALS
-  Konva.Image.fromURL('/assets/switch_internals.png', function (image) {
+  Konva.Image.fromURL('assets/switch_internals.png', function (image) {
     image.setAttrs({
       x: width / 2,
       y: -10,
@@ -251,7 +251,7 @@ const createMCCBUnit = (
   }
 
   // LOAD INTERNALS
-  Konva.Image.fromURL('/assets/mccb_internals.png', function (image) {
+  Konva.Image.fromURL('assets/mccb_internals.png', function (image) {
     image.setAttrs({
       x: width / 2,
       y: -10,
@@ -265,7 +265,7 @@ const createMCCBUnit = (
   });
 
   // LOAD INTERNALS KNOB
-  Konva.Image.fromURL('/assets/mccb_internals_knob.png', function (image) {
+  Konva.Image.fromURL('assets/mccb_internals_knob.png', function (image) {
     image.setAttrs({
       x: width / 2,
       y: height / 2,
@@ -341,7 +341,7 @@ const createACBUnit = (name, x, y, width, height, labelPlacement) => {
   }
 
   // LOAD INTERNALS
-  Konva.Image.fromURL('/assets/acb_internals.png', function (image) {
+  Konva.Image.fromURL('assets/acb_internals.png', function (image) {
     image.setAttrs({
       x: width / 2,
       y: height / 2,
