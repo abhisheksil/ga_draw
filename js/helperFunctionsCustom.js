@@ -493,12 +493,12 @@ export const createVerticalSection = (
     width: width,
     height: height,
     // fill: 'green',
-    stroke: '#AAA',
-    strokeWidth: 3,
+    stroke: '#999',
+    strokeWidth: 2,
     name: 'bounding_box',
   });
   rect.dashEnabled(true);
-  rect.dash([10, 5]);
+  rect.dash([20, 20]);
 
   group.add(rect);
 

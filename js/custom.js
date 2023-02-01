@@ -23,7 +23,7 @@ var stage = new Konva.Stage({
   container: 'container',
   width: width,
   height: height,
-  draggable: false,
+  draggable: true,
 });
 
 var layer = new Konva.Layer();
@@ -227,10 +227,23 @@ $(document).ready(function () {
 
   $('#undo').on('click', function () {
     if (currently_selected_vertical_section.children.length > 0) {
-      console.log(currently_selected_vertical_section.children);
+      console.log(currently_selected_vertical_section.children.length);
+
+      if (currently_selected_vertical_section.children.length == 1) {
+        current_stage_width -= parseInt(
+          currently_selected_vertical_section.width()
+        );
+      }
+
       currently_selected_vertical_section.children[
         currently_selected_vertical_section.children.length - 1
       ].destroy();
+
+      if (currently_selected_vertical_section.children.length == 0) {
+        vertical_sections_array.pop();
+        currently_selected_vertical_section =
+          vertical_sections_array[vertical_sections_array.length - 1];
+      }
     }
   });
 
