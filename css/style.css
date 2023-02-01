@@ -1,12 +1,148 @@
 body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
   /* background-color: #f0f0f0; */
   background-color: #ffffff;
+
+  /* display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; */
+}
+
+#header {
+  position: fixed;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 40px;
+  color: whitesmoke;
+  background-color: black;
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 24px;
+  z-index: 999;
 }
 
 #container {
-  width: 3500px;
-  height: 3500px;
+  position: absolute;
+  top: 40px;
+  width: 100%;
+  height: 100%;
+}
+
+/* ACCORDION */
+/* (A) ACCORDION WRAPPER */
+.awrap {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+/* (B) HEADER TAB */
+/* (B1) TAB ITSELF */
+.ahead {
+  position: relative;
+  cursor: pointer;
+  padding: 6px 6px 4px 8px;
+  background: #666;
+  color: #fff;
+  border-bottom: 2px solid #444;
+}
+
+.ahead.open {
+  background: #222;
+}
+
+/* (B2) RIGHT ARROW */
+/* .ahead:after {
+  position: absolute;
+  content: '\25b6';
+  right: 10px;
+  transition: transform 0.2s;
+} */
+
+/* (C) CONTENT TAB */
+/* (C1) TAB ITSELF - CLOSED BY DEFAULT */
+.abody {
+  overflow: hidden;
+  /* transition: all 0.2s ease-in-out; */
+  max-height: 0;
+  height: auto;
+  background: whitesmoke;
+  color: #333;
+}
+
+/* (C2) OPEN TAB - DOWN ARROW */
+.ahead.open:after {
+  transform: rotate(90deg);
+}
+
+/* (C3) OPEN TAB - SHOW CONTENT */
+.ahead.open + .abody {
+  max-height: 600px;
+  padding: 12px;
+  border: 1px solid #666;
+  border-top: none;
+}
+
+/* (X) DOES NOT MATTER */
+/* PAGE & BODY */
+* {
+  /* font-family: arial, sans-serif; */
+  box-sizing: border-box;
+}
+
+/* WIDGET */
+.widget-wrap {
+  position: fixed;
+  top: 50px;
+  right: 50px;
+
+  min-width: 250px;
+  /* padding: 30px; */
+  /* border-radius: 20px; */
+  background: rgba(255, 255, 255, 0.4);
+}
+
+#accordion {
+  font-family: 'Roboto Condensed', sans-serif;
+}
+
+.add {
+  font-family: 'Roboto', sans-serif;
+  padding: 6px 6px 4px 8px;
+  background: red;
+  width: 50px;
+  /* height: 40px; */
+  display: flex;
+  align-items: center;
+  color: white;
+  user-select: none;
+}
+
+input {
+  font-family: 'Roboto Condensed', sans-serif;
+  font-size: 16px;
+}
+.input-box {
+  padding-bottom: 4px;
+}
+.input-box-title {
+  font-size: 14px;
+}
+.button-add {
+  cursor: pointer;
+  color: whitesmoke;
+  background: #444;
+  margin-top: 4px;
+  padding: 4px 6px 4px 6px;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.input-box.empty {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
