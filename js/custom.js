@@ -225,6 +225,15 @@ $(document).ready(function () {
     current_y_pos += height;
   });
 
+  $('#undo').on('click', function () {
+    if (currently_selected_vertical_section.children.length > 0) {
+      console.log(currently_selected_vertical_section.children);
+      currently_selected_vertical_section.children[
+        currently_selected_vertical_section.children.length - 1
+      ].destroy();
+    }
+  });
+
   // TRIGGERS
   // $('#vertical-section .button-add').trigger('click');
   // $('#busbar-unit .button-add').trigger('click');
