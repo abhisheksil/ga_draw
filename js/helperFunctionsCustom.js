@@ -533,12 +533,12 @@ export const createVerticalSection = (
 
 export const drawGrid = (alpha) => {
   var groupGrid = new Konva.Group({
-    x: -1000,
-    y: -1000,
+    x: -200,
+    y: -200,
     rotation: 0,
   });
 
-  var xCount = 70;
+  var xCount = 80;
   for (var x = 1; x < xCount; x++) {
     var gridLine = new Konva.Line({
       points: [x * 100, 0, x * 100, 4000],
@@ -565,7 +565,7 @@ export const drawGrid = (alpha) => {
     groupGrid.add(gridLine);
   }
 
-  xCount = 700;
+  xCount = 800;
   for (var x = 1; x < xCount; x++) {
     // console.log(x * 10);
     var gridLine = new Konva.Line({
@@ -583,7 +583,7 @@ export const drawGrid = (alpha) => {
   for (var y = 1; y < yCount; y++) {
     // console.log(y * 10);
     var gridLine = new Konva.Line({
-      points: [0, y * 10, 7000, y * 10],
+      points: [0, y * 10, 8000, y * 10],
       stroke: 'gray',
       opacity: alpha,
       strokeWidth: 1,
