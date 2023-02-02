@@ -41,8 +41,8 @@ var layer = new Konva.Layer();
 stage.add(layer);
 
 // stage.x((width - stage.width()) / 2);
-stage.scaleX(0.5);
-stage.scaleY(0.5);
+stage.scaleX(0.35);
+stage.scaleY(0.35);
 stage.x(50);
 stage.y(50);
 
