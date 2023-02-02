@@ -1,16 +1,17 @@
 import $ from './jquery.module.js';
 
 import {
-  createKeyHole,
+  createLock,
   createCrossHair,
   createVacantUnit,
-  createSwitchUnit,
+  createControlMeteringUnit,
   createMCCBUnit,
   createACBUnit,
   createBusbarUnit,
   createVerticalSection,
   getCurrentVSID,
   findHeight,
+  loadFile,
   drawGrid,
 } from './helperFunctionsCustom.js';
 
@@ -20,20 +21,25 @@ width = 3000;
 // height = 2000;
 
 var stage = new Konva.Stage({
+  id: 'stage',
   container: 'container',
   width: width,
   height: height,
-  draggable: true,
+  draggable: false,
 });
 
-var layer = new Konva.Layer();
+var layer_grid = new Konva.Layer();
 
 var grid = drawGrid(0.25);
 grid.cache();
-layer.add(grid);
+layer_grid.add(grid);
 
 // add the layer to the stage
+stage.add(layer_grid);
+
+var layer = new Konva.Layer();
 stage.add(layer);
+
 // stage.x((width - stage.width()) / 2);
 stage.scaleX(0.5);
 stage.scaleY(0.5);
@@ -44,15 +50,27 @@ stage.y(50);
 let current_stage_width = 0;
 let current_y_pos = 0;
 let currently_selected_vertical_section;
+let last_clicked_element;
+let modal_operation;
 
 // INIT ARRAYS
 let vertical_sections_array = [];
+let steps_array = [];
 
 $(document).ready(function () {
-  console.log('ready!');
+  // console.log('ready!');
+
+  // SET FP AS DEFAULT FOR MCCB
+  $('#FP').prop('checked', true);
+
+  stage.on('mousedown', function (e) {
+    // last_clicked_element = e.currentTarget;
+    console.log(last_clicked_element.id());
+    console.log(last_clicked_element.parent.id());
+  });
 
   $('#vertical-section .button-add').on('click', function () {
-    console.info('ADD VERTICAL SECTION');
+    // console.info('ADD VERTICAL SECTION');
 
     let is_empty = $(this).siblings().find('.input-empty').prop('checked');
 
@@ -70,6 +88,19 @@ $(document).ready(function () {
     let width = $(this).siblings().find('.input-width').val();
     let height = $(this).siblings().find('.input-height').val();
 
+    let steps_json = {};
+    steps_json.operation = 'vertical-section';
+    steps_json.params = {
+      name: name,
+      x: x,
+      y: y,
+      width: width,
+      height: height,
+      is_empty: is_empty,
+    };
+
+    steps_array.push(steps_json);
+
     let vertical_section = createVerticalSection(
       name,
       x,
@@ -80,6 +111,10 @@ $(document).ready(function () {
     );
     vertical_sections_array.push(vertical_section);
     layer.add(vertical_section);
+
+    // vertical_section.on('mousedown', function (e) {
+    //   last_clicked_element = e.currentTarget;
+    // });
 
     currently_selected_vertical_section = vertical_section;
 
@@ -92,7 +127,7 @@ $(document).ready(function () {
   });
 
   $('#busbar-unit .button-add').on('click', function () {
-    console.info('ADD BUSBAR UNIT');
+    // console.info('ADD BUSBAR UNIT');
 
     let name = `${
       currently_selected_vertical_section.id()[
@@ -109,6 +144,19 @@ $(document).ready(function () {
     let width = $(this).siblings().find('.input-width').val();
     let height = $(this).siblings().find('.input-height').val();
 
+    let steps_json = {};
+    steps_json.operation = 'busbar-unit';
+    steps_json.params = {
+      name: name,
+      x: x,
+      y: y,
+      width: width,
+      height: height,
+      is_empty: is_empty ? '' : 'C',
+    };
+
+    steps_array.push(steps_json);
+
     var busbar_unit = createBusbarUnit(
       name,
       x,
@@ -119,11 +167,15 @@ $(document).ready(function () {
     );
     currently_selected_vertical_section.add(busbar_unit);
 
+    busbar_unit.on('mousedown', function (e) {
+      last_clicked_element = e.currentTarget;
+    });
+
     current_y_pos += height;
   });
 
   $('#acb-unit .button-add').on('click', function () {
-    console.info('ADD ACB UNIT');
+    // console.info('ADD ACB UNIT');
 
     let name = `${
       currently_selected_vertical_section.id()[
@@ -134,44 +186,26 @@ $(document).ready(function () {
     let y = findHeight(currently_selected_vertical_section);
     let width = $(this).siblings().find('.input-width').val();
     let height = $(this).siblings().find('.input-height').val();
+    let labelPlacement = 'L';
     let amps = $(this).siblings().find('.input-amps').val();
+    let fontSize = 56;
 
-    var busbar_unit = createACBUnit(
-      name,
-      x,
-      y,
-      width,
-      height,
-      'L',
-      `${amps}A`,
-      56
-    );
-    currently_selected_vertical_section.add(busbar_unit);
+    let steps_json = {};
+    steps_json.operation = 'acb-unit';
+    steps_json.params = {
+      name: name,
+      x: x,
+      y: y,
+      width: width,
+      height: height,
+      labelPlacement: labelPlacement,
+      amps: amps,
+      fontSize: fontSize,
+    };
 
-    current_y_pos += height;
-  });
+    steps_array.push(steps_json);
 
-  $('#mccb-unit .button-add').on('click', function () {
-    console.info('ADD MCCB UNIT');
-
-    let name = `${
-      currently_selected_vertical_section.id()[
-        currently_selected_vertical_section.id().length - 1
-      ]
-    }F${currently_selected_vertical_section.children.length - 1}`;
-    let x = 0;
-    let y = findHeight(currently_selected_vertical_section);
-    let width = $(this).siblings().find('.input-width').val();
-    let height = $(this).siblings().find('.input-height').val();
-    let amps = $(this).siblings().find('.input-amps').val();
-    let fontSize = 48;
-    if (width <= 500) {
-      fontSize = 42;
-    }
-    if (width <= 400) {
-      fontSize = 36;
-    }
-    var busbar_unit = createMCCBUnit(
+    var acb_unit = createACBUnit(
       name,
       x,
       y,
@@ -181,13 +215,17 @@ $(document).ready(function () {
       `${amps}A`,
       fontSize
     );
-    currently_selected_vertical_section.add(busbar_unit);
+    currently_selected_vertical_section.add(acb_unit);
+
+    acb_unit.on('mousedown', function (e) {
+      last_clicked_element = e.currentTarget;
+    });
 
     current_y_pos += height;
   });
 
-  $('#switch-unit .button-add').on('click', function () {
-    console.info('ADD SWITCH UNIT');
+  $('#mccb-unit .button-add').on('click', function () {
+    // console.info('ADD MCCB UNIT');
 
     let name = `${
       currently_selected_vertical_section.id()[
@@ -198,15 +236,103 @@ $(document).ready(function () {
     let y = findHeight(currently_selected_vertical_section);
     let width = $(this).siblings().find('.input-width').val();
     let height = $(this).siblings().find('.input-height').val();
+    let labelPlacement = 'L';
+    let amps = $(this).siblings().find('.input-amps').val();
+    let pole = 'FP';
+    if ($(this).siblings().find('#TP').prop('checked')) {
+      pole = 'TP';
+    }
 
-    var busbar_unit = createSwitchUnit(name, x, y, width, height, 'L');
-    currently_selected_vertical_section.add(busbar_unit);
+    let fontSize = 48;
+    if (width <= 500) {
+      fontSize = 42;
+    }
+    if (width <= 400) {
+      fontSize = 36;
+    }
+
+    let steps_json = {};
+    steps_json.operation = 'mccb-unit';
+    steps_json.params = {
+      name: name,
+      x: x,
+      y: y,
+      width: width,
+      height: height,
+      labelPlacement: labelPlacement,
+      amps: amps,
+      pole: pole,
+      fontSize: fontSize,
+    };
+
+    steps_array.push(steps_json);
+
+    var mccb_unit = createMCCBUnit(
+      name,
+      x,
+      y,
+      width,
+      height,
+      labelPlacement,
+      `${amps}A`,
+      pole,
+      fontSize
+    );
+    currently_selected_vertical_section.add(mccb_unit);
+
+    mccb_unit.on('mousedown', function (e) {
+      last_clicked_element = e.currentTarget;
+    });
+
+    current_y_pos += height;
+  });
+
+  $('#control-metering-unit .button-add').on('click', function () {
+    // console.info('ADD CONTROL & METERING UNIT');
+
+    let name = `${
+      currently_selected_vertical_section.id()[
+        currently_selected_vertical_section.id().length - 1
+      ]
+    }F${currently_selected_vertical_section.children.length - 1}`;
+    let x = 0;
+    let y = findHeight(currently_selected_vertical_section);
+    let width = $(this).siblings().find('.input-width').val();
+    let height = $(this).siblings().find('.input-height').val();
+    let labelPlacement = 'L';
+
+    let steps_json = {};
+    steps_json.operation = 'control-metering-unit';
+    steps_json.params = {
+      name: name,
+      x: x,
+      y: y,
+      width: width,
+      height: height,
+      labelPlacement: labelPlacement,
+    };
+
+    steps_array.push(steps_json);
+
+    var control_metering_unit = createControlMeteringUnit(
+      name,
+      x,
+      y,
+      width,
+      height,
+      labelPlacement
+    );
+    currently_selected_vertical_section.add(control_metering_unit);
+
+    control_metering_unit.on('mousedown', function (e) {
+      last_clicked_element = e.currentTarget;
+    });
 
     current_y_pos += height;
   });
 
   $('#vacant-unit .button-add').on('click', function () {
-    console.info('ADD VACANT UNIT');
+    // console.info('ADD VACANT UNIT');
 
     let name = `${
       currently_selected_vertical_section.id()[
@@ -217,16 +343,166 @@ $(document).ready(function () {
     let y = findHeight(currently_selected_vertical_section);
     let width = $(this).siblings().find('.input-width').val();
     let height = $(this).siblings().find('.input-height').val();
-    let amps = $(this).siblings().find('.input-amps').val();
+    let labelPlacement = 'L';
 
-    var vacant_unit = createVacantUnit(name, x, y, width, height);
+    let steps_json = {};
+    steps_json.operation = 'vacant-unit';
+    steps_json.params = {
+      name: name,
+      x: x,
+      y: y,
+      width: width,
+      height: height,
+      labelPlacement: labelPlacement,
+    };
+
+    steps_array.push(steps_json);
+
+    var vacant_unit = createVacantUnit(
+      name,
+      x,
+      y,
+      width,
+      height,
+      labelPlacement
+    );
     currently_selected_vertical_section.add(vacant_unit);
+
+    vacant_unit.on('mousedown', function (e) {
+      last_clicked_element = e.currentTarget;
+    });
 
     current_y_pos += height;
   });
 
+  $('#new').on('mouseover', function (e) {
+    $('.tooltip-text').html('NEW');
+  });
+  $('#new').on('mouseout', function (e) {
+    $('.tooltip-text').html('');
+  });
+
+  $('#new').on('click', function () {
+    console.log(`steps_array.length: ${steps_array.length}`);
+    if (steps_array.length > 0) {
+      $('#modal').css('display', 'flex');
+
+      modal_operation = 'new';
+    }
+  });
+
+  $('#modal .ok').on('click', function () {
+    $('#modal').css('display', 'none');
+
+    if (modal_operation == 'new') {
+      layer.removeChildren();
+
+      // INIT VARIABLES
+      current_stage_width = 0;
+      current_y_pos = 0;
+      currently_selected_vertical_section = null;
+      last_clicked_element = null;
+
+      // INIT ARRAYS
+      vertical_sections_array = [];
+      steps_array = [];
+    }
+  });
+
+  $('#modal .cancel').on('click', function () {
+    $('#modal').css('display', 'none');
+  });
+
+  $('#load').on('mouseover', function (e) {
+    $('.tooltip-text').html('OPEN');
+  });
+  $('#load').on('mouseout', function (e) {
+    $('.tooltip-text').html('');
+  });
+
+  $('#load').on('click', function () {
+    layer.removeChildren();
+
+    // INIT VARIABLES
+    current_stage_width = 0;
+    current_y_pos = 0;
+    currently_selected_vertical_section = null;
+    last_clicked_element = null;
+
+    // INIT ARRAYS
+    vertical_sections_array = [];
+    steps_array = [];
+
+    $('#loadFile').trigger('click');
+    // fetch('./saves/load_test.json')
+    //   .then((response) => response.json())
+    //   .then((json) => loadFile(json));
+  });
+
+  document.getElementById('loadFile').onchange = function (evt) {
+    try {
+      let files = evt.target.files;
+      if (!files.length) {
+        alert('No file selected!');
+        return;
+      }
+      let file = files[0];
+      let reader = new FileReader();
+      const self = this;
+      reader.onload = (event) => {
+        // console.log(event.target.result);
+        loadFile(JSON.parse(event.target.result));
+      };
+      reader.readAsText(file);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  $('#save').on('mouseover', function (e) {
+    $('.tooltip-text').html('SAVE');
+  });
+  $('#save').on('mouseout', function (e) {
+    $('.tooltip-text').html('');
+  });
+
+  $('#save').on('click', function (e) {
+    if (steps_array.length > 0) {
+      downloadObjectAsJson(steps_array, `save-${Date.now()}.gad`);
+    }
+  });
+
+  function downloadObjectAsJson(exportObj, exportName) {
+    var dataStr =
+      'data:text/json;charset=utf-8,' +
+      encodeURIComponent(JSON.stringify(exportObj));
+    var downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute('href', dataStr);
+    downloadAnchorNode.setAttribute('download', exportName);
+    document.body.appendChild(downloadAnchorNode); // required for firefox
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
+  }
+
+  $('#add').on('mouseover', function (e) {
+    $('.tooltip-text').html('ADD');
+  });
+  $('#add').on('mouseout', function (e) {
+    $('.tooltip-text').html('');
+  });
+
+  $('#undo').on('mouseover', function (e) {
+    $('.tooltip-text').html('UNDO');
+  });
+  $('#undo').on('mouseout', function (e) {
+    $('.tooltip-text').html('');
+  });
+
   $('#undo').on('click', function () {
-    if (currently_selected_vertical_section.children.length > 0) {
+    if (
+      currently_selected_vertical_section &&
+      currently_selected_vertical_section.children.length > 0
+    ) {
       console.log(currently_selected_vertical_section.children.length);
 
       if (currently_selected_vertical_section.children.length == 1) {
@@ -244,6 +520,8 @@ $(document).ready(function () {
         currently_selected_vertical_section =
           vertical_sections_array[vertical_sections_array.length - 1];
       }
+
+      steps_array.pop();
     }
   });
 
@@ -251,12 +529,12 @@ $(document).ready(function () {
   // $('#vertical-section .button-add').trigger('click');
   // $('#busbar-unit .button-add').trigger('click');
   // $('#acb-unit .button-add').trigger('click');
-  // $('#switch-unit .button-add').trigger('click');
+  // $('#control-metering-unit .button-add').trigger('click');
 
   // $('#vertical-section .button-add').trigger('click');
   // $('#busbar-unit .button-add').trigger('click');
   // $('#acb-unit .button-add').trigger('click');
-  // $('#switch-unit .button-add').trigger('click');
+  // $('#control-metering-unit .button-add').trigger('click');
 
   // $('#vertical-section .button-add').trigger('click');
   // $('#busbar-unit .button-add').trigger('click');

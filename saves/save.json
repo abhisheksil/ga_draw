@@ -1,0 +1,508 @@
+[
+  {
+    "operation": "vertical-section",
+    "params": {
+      "name": "vertical-section-1",
+      "x": 0,
+      "y": 0,
+      "width": "600",
+      "height": "2200",
+      "is_empty": false
+    }
+  },
+  {
+    "operation": "busbar-unit",
+    "params": {
+      "name": "1F",
+      "x": 0,
+      "y": 0,
+      "width": "600",
+      "height": "400",
+      "is_empty": "C"
+    }
+  },
+  {
+    "operation": "acb-unit",
+    "params": {
+      "name": "1F1",
+      "x": 0,
+      "y": 400,
+      "width": "600",
+      "height": "1000",
+      "labelPlacement": "L",
+      "amps": "1000",
+      "fontSize": 56
+    }
+  },
+  {
+    "operation": "control-metering-unit",
+    "params": {
+      "name": "1F2",
+      "x": 0,
+      "y": 1400,
+      "width": "600",
+      "height": "800",
+      "labelPlacement": "L"
+    }
+  },
+  {
+    "operation": "vertical-section",
+    "params": {
+      "name": "vertical-section-2",
+      "x": 600,
+      "y": 0,
+      "width": "600",
+      "height": "2200",
+      "is_empty": false
+    }
+  },
+  {
+    "operation": "busbar-unit",
+    "params": {
+      "name": "2F",
+      "x": 0,
+      "y": 0,
+      "width": "600",
+      "height": "400",
+      "is_empty": "C"
+    }
+  },
+  {
+    "operation": "acb-unit",
+    "params": {
+      "name": "2F1",
+      "x": 0,
+      "y": 400,
+      "width": "600",
+      "height": "1000",
+      "labelPlacement": "L",
+      "amps": "1000",
+      "fontSize": 56
+    }
+  },
+  {
+    "operation": "control-metering-unit",
+    "params": {
+      "name": "2F2",
+      "x": 0,
+      "y": 1400,
+      "width": "600",
+      "height": "800",
+      "labelPlacement": "L"
+    }
+  },
+  {
+    "operation": "vertical-section",
+    "params": {
+      "name": "vertical-section-3",
+      "x": 1200,
+      "y": 0,
+      "width": "600",
+      "height": "2200",
+      "is_empty": false
+    }
+  },
+  {
+    "operation": "busbar-unit",
+    "params": {
+      "name": "3F",
+      "x": 0,
+      "y": 0,
+      "width": "600",
+      "height": "400",
+      "is_empty": "C"
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "3F1",
+      "x": 0,
+      "y": 400,
+      "width": "600",
+      "height": "600",
+      "labelPlacement": "L",
+      "amps": "800",
+      "pole": "FP",
+      "fontSize": 48
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "3F2",
+      "x": 0,
+      "y": 1000,
+      "width": "600",
+      "height": "600",
+      "labelPlacement": "L",
+      "amps": "630",
+      "pole": "FP",
+      "fontSize": 48
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "3F3",
+      "x": 0,
+      "y": 1600,
+      "width": "600",
+      "height": "600",
+      "labelPlacement": "L",
+      "amps": "630",
+      "pole": "FP",
+      "fontSize": 48
+    }
+  },
+  {
+    "operation": "vertical-section",
+    "params": {
+      "name": "vertical-section-0",
+      "x": 1800,
+      "y": 0,
+      "width": "400",
+      "height": "2200",
+      "is_empty": true
+    }
+  },
+  {
+    "operation": "busbar-unit",
+    "params": {
+      "name": "0F",
+      "x": 0,
+      "y": 0,
+      "width": "400",
+      "height": "400",
+      "is_empty": ""
+    }
+  },
+  {
+    "operation": "busbar-unit",
+    "params": {
+      "name": "0F",
+      "x": 0,
+      "y": 400,
+      "width": "400",
+      "height": "1800",
+      "is_empty": ""
+    }
+  },
+  {
+    "operation": "vertical-section",
+    "params": {
+      "name": "vertical-section-4",
+      "x": 2200,
+      "y": 0,
+      "width": "600",
+      "height": "2200",
+      "is_empty": false
+    }
+  },
+  {
+    "operation": "busbar-unit",
+    "params": {
+      "name": "4F",
+      "x": 0,
+      "y": 0,
+      "width": "600",
+      "height": "400",
+      "is_empty": "C"
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "4F1",
+      "x": 0,
+      "y": 400,
+      "width": "600",
+      "height": "600",
+      "labelPlacement": "L",
+      "amps": "400",
+      "pole": "FP",
+      "fontSize": 48
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "4F2",
+      "x": 0,
+      "y": 1000,
+      "width": "600",
+      "height": "400",
+      "labelPlacement": "L",
+      "amps": "400",
+      "pole": "FP",
+      "fontSize": 48
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "4F3",
+      "x": 0,
+      "y": 1400,
+      "width": "600",
+      "height": "400",
+      "labelPlacement": "L",
+      "amps": "400",
+      "pole": "FP",
+      "fontSize": 48
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "4F4",
+      "x": 0,
+      "y": 1800,
+      "width": "600",
+      "height": "400",
+      "labelPlacement": "L",
+      "amps": "250",
+      "pole": "FP",
+      "fontSize": 48
+    }
+  },
+  {
+    "operation": "vertical-section",
+    "params": {
+      "name": "vertical-section-5",
+      "x": 2800,
+      "y": 0,
+      "width": "500",
+      "height": "2200",
+      "is_empty": false
+    }
+  },
+  {
+    "operation": "busbar-unit",
+    "params": {
+      "name": "5F",
+      "x": 0,
+      "y": 0,
+      "width": "500",
+      "height": "400",
+      "is_empty": "C"
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "5F1",
+      "x": 0,
+      "y": 400,
+      "width": "500",
+      "height": "300",
+      "labelPlacement": "L",
+      "amps": "125",
+      "pole": "FP",
+      "fontSize": 42
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "5F2",
+      "x": 0,
+      "y": 700,
+      "width": "500",
+      "height": "300",
+      "labelPlacement": "L",
+      "amps": "160",
+      "pole": "FP",
+      "fontSize": 42
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "5F3",
+      "x": 0,
+      "y": 1000,
+      "width": "500",
+      "height": "300",
+      "labelPlacement": "L",
+      "amps": "160",
+      "pole": "FP",
+      "fontSize": 42
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "5F4",
+      "x": 0,
+      "y": 1300,
+      "width": "500",
+      "height": "300",
+      "labelPlacement": "L",
+      "amps": "160",
+      "pole": "FP",
+      "fontSize": 42
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "5F5",
+      "x": 0,
+      "y": 1600,
+      "width": "500",
+      "height": "300",
+      "labelPlacement": "L",
+      "amps": "160",
+      "pole": "FP",
+      "fontSize": 42
+    }
+  },
+  {
+    "operation": "vacant-unit",
+    "params": {
+      "name": "5F6",
+      "x": 0,
+      "y": 1900,
+      "width": "500",
+      "height": "300",
+      "labelPlacement": "L"
+    }
+  },
+  {
+    "operation": "vertical-section",
+    "params": {
+      "name": "vertical-section-0",
+      "x": 3300,
+      "y": 0,
+      "width": "400",
+      "height": "2200",
+      "is_empty": true
+    }
+  },
+  {
+    "operation": "busbar-unit",
+    "params": {
+      "name": "0F",
+      "x": 0,
+      "y": 0,
+      "width": "400",
+      "height": "400",
+      "is_empty": ""
+    }
+  },
+  {
+    "operation": "busbar-unit",
+    "params": {
+      "name": "0F",
+      "x": 0,
+      "y": 400,
+      "width": "400",
+      "height": "1800",
+      "is_empty": ""
+    }
+  },
+  {
+    "operation": "vertical-section",
+    "params": {
+      "name": "vertical-section-6",
+      "x": 3700,
+      "y": 0,
+      "width": "400",
+      "height": "2200",
+      "is_empty": false
+    }
+  },
+  {
+    "operation": "busbar-unit",
+    "params": {
+      "name": "6F",
+      "x": 0,
+      "y": 0,
+      "width": "400",
+      "height": "400",
+      "is_empty": "C"
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "6F1",
+      "x": 0,
+      "y": 400,
+      "width": "400",
+      "height": "300",
+      "labelPlacement": "L",
+      "amps": "63",
+      "pole": "FP",
+      "fontSize": 36
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "6F2",
+      "x": 0,
+      "y": 700,
+      "width": "400",
+      "height": "300",
+      "labelPlacement": "L",
+      "amps": "63",
+      "pole": "FP",
+      "fontSize": 36
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "6F3",
+      "x": 0,
+      "y": 1000,
+      "width": "400",
+      "height": "300",
+      "labelPlacement": "L",
+      "amps": "63",
+      "pole": "FP",
+      "fontSize": 36
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "6F4",
+      "x": 0,
+      "y": 1300,
+      "width": "400",
+      "height": "300",
+      "labelPlacement": "L",
+      "amps": "63",
+      "pole": "FP",
+      "fontSize": 36
+    }
+  },
+  {
+    "operation": "mccb-unit",
+    "params": {
+      "name": "6F5",
+      "x": 0,
+      "y": 1600,
+      "width": "400",
+      "height": "300",
+      "labelPlacement": "L",
+      "amps": "32",
+      "pole": "FP",
+      "fontSize": 36
+    }
+  },
+  {
+    "operation": "vacant-unit",
+    "params": {
+      "name": "6F6",
+      "x": 0,
+      "y": 1900,
+      "width": "400",
+      "height": "300",
+      "labelPlacement": "L"
+    }
+  }
+]

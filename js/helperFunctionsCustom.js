@@ -1,4 +1,6 @@
-export const createKeyHole = (x, y, radius) => {
+import $ from './jquery.module.js';
+
+export const createLock = (x, y, radius) => {
   var group = new Konva.Group({
     x: x,
     y: y,
@@ -107,10 +109,33 @@ export const createVacantUnit = (
   });
   group.add(rect);
 
-  var keyHole = createKeyHole(width - 40, 72, 12);
-  group.add(keyHole);
-  var keyHole = createKeyHole(width - 40, height - 72, 12);
-  group.add(keyHole);
+  var lock = createLock(width - 40, 72, 12);
+  group.add(lock);
+  var lock = createLock(width - 40, height - 72, 12);
+  group.add(lock);
+
+  if (labelPlacement == 'L') {
+    var line = new Konva.Line({
+      points: [0, height - 40, 96, height - 40, 96, height],
+      stroke: 'black',
+      strokeWidth: 2,
+      lineCap: 'round',
+      lineJoin: 'round',
+    });
+    group.add(line);
+
+    var text = new Konva.Text({
+      x: 48,
+      y: height - 16,
+      text: name,
+      fontSize: 32,
+      fontFamily: 'Roboto',
+      fill: 'black',
+    });
+    text.offsetX(text.width() / 2);
+    text.offsetY(text.height() / 2);
+    group.add(text);
+  }
 
   var text = new Konva.Text({
     x: width / 2,
@@ -128,7 +153,7 @@ export const createVacantUnit = (
   return group;
 };
 
-export const createSwitchUnit = (
+export const createControlMeteringUnit = (
   name,
   x,
   y,
@@ -156,10 +181,10 @@ export const createSwitchUnit = (
   });
   group.add(rect);
 
-  var keyHole = createKeyHole(width - 40, 72, 12);
-  group.add(keyHole);
-  var keyHole = createKeyHole(width - 40, height - 72, 12);
-  group.add(keyHole);
+  var lock = createLock(width - 40, 72, 12);
+  group.add(lock);
+  var lock = createLock(width - 40, height - 72, 12);
+  group.add(lock);
 
   if (labelPlacement == 'L') {
     var line = new Konva.Line({
@@ -209,6 +234,7 @@ export const createMCCBUnit = (
   height,
   labelPlacement,
   amps,
+  pole,
   fontSize
 ) => {
   var group = new Konva.Group({
@@ -231,10 +257,10 @@ export const createMCCBUnit = (
   });
   group.add(rect);
 
-  var keyHole = createKeyHole(width - 40, 72, 12);
-  group.add(keyHole);
-  var keyHole = createKeyHole(width - 40, height - 72, 12);
-  group.add(keyHole);
+  var lock = createLock(width - 40, 72, 12);
+  group.add(lock);
+  var lock = createLock(width - 40, height - 72, 12);
+  group.add(lock);
 
   if (labelPlacement == 'L') {
     var line = new Konva.Line({
@@ -290,7 +316,7 @@ export const createMCCBUnit = (
   var text = new Konva.Text({
     x: width / 2,
     y: height - 50,
-    text: amps + ', MCCB, FP',
+    text: `${amps}, MCCB, ${pole}`,
     fontSize: fontSize,
     fontFamily: 'Roboto',
     fill: 'black',
@@ -333,10 +359,10 @@ export const createACBUnit = (
   });
   group.add(rect);
 
-  var keyHole = createKeyHole(width - 40, 72, 12);
-  group.add(keyHole);
-  var keyHole = createKeyHole(width - 40, height - 72, 12);
-  group.add(keyHole);
+  var lock = createLock(width - 40, 72, 12);
+  group.add(lock);
+  var lock = createLock(width - 40, height - 72, 12);
+  group.add(lock);
 
   if (labelPlacement == 'L') {
     var line = new Konva.Line({
@@ -575,7 +601,7 @@ export const getCurrentVSID = (vertical_sections_array) => {
   let id = 1;
   for (let vs of vertical_sections_array) {
     if (parseInt(vs.id()[vs.id().length - 1]) > 0) {
-      console.log(parseInt(vs.id()[vs.id().length - 1]));
+      // console.log(parseInt(vs.id()[vs.id().length - 1]));
       id += 1;
     }
   }
@@ -593,6 +619,73 @@ export const findHeight = (vertical_section) => {
   }
 
   return height;
+};
+
+export const loadFile = (json) => {
+  console.log(json);
+
+  let name, x, y, width, height, is_empty, labelPlacement, amps, fontSize;
+
+  for (let step of json) {
+    console.log(step.operation);
+    // console.log(step.params);
+    switch (step.operation) {
+      case 'vertical-section':
+        if (step.params.is_empty) {
+          $('#vertical-section .input-empty').prop('checked', true);
+        } else {
+          $('#vertical-section .input-empty').prop('checked', false);
+        }
+
+        $('#vertical-section .input-width').val(step.params.width);
+        $('#vertical-section .input-height').val(step.params.height);
+
+        $('#vertical-section .button-add').trigger('click');
+        break;
+
+      case 'busbar-unit':
+        $('#busbar-unit .input-width').val(step.params.width);
+        $('#busbar-unit .input-height').val(step.params.height);
+
+        $('#busbar-unit .button-add').trigger('click');
+        break;
+
+      case 'acb-unit':
+        $('#acb-unit .input-width').val(step.params.width);
+        $('#acb-unit .input-height').val(step.params.height);
+        $('#acb-unit .input-amps').val(step.params.amps);
+
+        $('#acb-unit .button-add').trigger('click');
+        break;
+
+      case 'mccb-unit':
+        $('#mccb-unit .input-width').val(step.params.width);
+        $('#mccb-unit .input-height').val(step.params.height);
+        $('#mccb-unit .input-amps').val(step.params.amps);
+        if (step.params.pole == 'TP') {
+          $('#mccb-unit #TP').prop('checked', true);
+        } else {
+          $('#mccb-unit #FP').prop('checked', true);
+        }
+
+        $('#mccb-unit .button-add').trigger('click');
+        break;
+
+      case 'control-metering-unit':
+        $('#control-metering-unit .input-width').val(step.params.width);
+        $('#control-metering-unit .input-height').val(step.params.height);
+
+        $('#control-metering-unit .button-add').trigger('click');
+        break;
+
+      case 'vacant-unit':
+        $('#vacant-unit .input-width').val(step.params.width);
+        $('#vacant-unit .input-height').val(step.params.height);
+
+        $('#vacant-unit .button-add').trigger('click');
+        break;
+    }
+  }
 };
 
 export function accordize(target, one) {

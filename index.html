@@ -7,7 +7,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0"
     />
-    <title>GA Drawing POC</title>
+    <title>GA Drawing v0.1a</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -15,7 +15,20 @@
       href="https://fonts.googleapis.com/css2?family=Roboto&family=Roboto+Condensed&display=swap"
       rel="stylesheet"
     />
-
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/fontawesome.min.css"
+      integrity="sha512-giQeaPns4lQTBMRpOOHsYnGw1tGVzbAIHUyHRgn7+6FmiEgGGjaG0T2LZJmAPMzRCl+Cug0ItQ2xDZpTmEc+CQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/solid.min.css"
+      integrity="sha512-6mc0R607di/biCutMUtU9K7NtNewiGQzrvWX4bWTeqmljZdJrwYvKJtnhgR+Ryvj+NRJ8+NnnCM/biGqMe/iRA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="css/style.css" />
     <!-- <script src="https://unpkg.com/browse/jquery@3.3.1/dist/jquery.min.js"></script> -->
     <script src="https://unpkg.com/konva@8.4.2/konva.min.js"></script>
@@ -23,12 +36,50 @@
   <body>
     <div id="header"><div>GA DRAWING TOOL</div></div>
     <div id="container"></div>
+    <div id="modal">
+      <div class="background"></div>
+      <div class="popup">
+        <div class="title"><div>ARE YOU SURE?</div></div>
+        <div class="message">
+          <div>YOU WILL LOSE ALL YOUR UNSAVED CHANGES</div>
+          <div class="buttons-container">
+            <div class="ok">CONFIRM</div>
+            <div class="cancel">CANCEL</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <input id="loadFile" type="file" accept=".gad" style="display: none" />
 
     <div class="widget-wrap">
+      <div class="tooltip"><div class="tooltip-text">NEW</div></div>
       <!-- <h1>ONLY ONE ITEM CAN OPEN</h1> -->
-      <div id="button-container">
-        <div id="add">ADD</div>
-        <div id="undo">UNDO</div>
+      <div id="menu-container">
+        <div id="new" class="button-container">
+          <i class="fa-solid fa-file"></i>
+          <!-- NEW -->
+          <div class="menu-button"></div>
+        </div>
+        <div id="load" class="button-container">
+          <i class="fa-solid fa-folder-open"></i>
+          <!-- LOAD -->
+          <div class="menu-button"></div>
+        </div>
+        <div id="save" class="button-container">
+          <i class="fa-solid fa-floppy-disk"></i>
+          <!-- SAVE -->
+          <div class="menu-button"></div>
+        </div>
+        <div id="add" class="button-container">
+          <i class="fa-solid fa-circle-plus"></i>
+          <!-- ADD -->
+          <div class="menu-button"></div>
+        </div>
+        <div id="undo" class="button-container">
+          <i class="fa-solid fa-delete-left"></i>
+          <!-- UNDO -->
+          <div class="menu-button"></div>
+        </div>
       </div>
       <ul id="accordion">
         <li>VERTICAL SECTION</li>
@@ -103,12 +154,32 @@
               <div class="input-box-title">AMPS:</div>
               <input type="number" class="input-amps" value="1000" />
             </div>
+            <div class="input-box pole">
+              <div class="input-box-title">POLE:</div>
+              <input
+                type="radio"
+                class="input-pole"
+                id="TP"
+                name="POLE"
+                value="TP"
+                checked
+              />
+              <label for="TP">TP</label><br />
+              <input
+                type="radio"
+                class="input-pole"
+                id="FP"
+                name="POLE"
+                value="FP"
+              />
+              <label for="FP">FP</label><br />
+            </div>
             <div class="button-add">ADD</div>
           </div>
         </li>
-        <li>SWITCH UNIT</li>
+        <li>CONTROL & METERING UNIT</li>
         <li>
-          <div id="switch-unit">
+          <div id="control-metering-unit">
             <div class="input-box width">
               <div class="input-box-title">WIDTH:</div>
               <input type="number" class="input-width" value="600" />
@@ -134,8 +205,34 @@
             <div class="button-add">ADD</div>
           </div>
         </li>
+        <li>HCA</li>
+        <li>
+          <div id="hca-unit">
+            <div class="input-box width">
+              <div class="input-box-title">WIDTH:</div>
+              <input type="number" class="input-width" value="600" />
+            </div>
+            <div class="input-box height">
+              <div class="input-box-title">HEIGHT:</div>
+              <input type="number" class="input-height" value="100" />
+            </div>
+            <div class="button-add">ADD</div>
+          </div>
+        </li>
         <li>BASE PLATE</li>
-        <li>--- TO BE ADDED ---</li>
+        <li>
+          <div id="base-unit">
+            <div class="input-box width">
+              <div class="input-box-title">WIDTH:</div>
+              <input type="number" class="input-width" value="600" />
+            </div>
+            <div class="input-box height">
+              <div class="input-box-title">HEIGHT:</div>
+              <input type="number" class="input-height" value="70" />
+            </div>
+            <div class="button-add">ADD</div>
+          </div>
+        </li>
       </ul>
     </div>
 
