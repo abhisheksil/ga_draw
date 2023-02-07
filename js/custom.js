@@ -13,20 +13,26 @@ import {
   findHeight,
   loadFile,
   drawGrid,
+  drawCurrentSelection,
+  toggleEditMenu,
 } from './helperFunctionsCustom.js';
 
 var width = window.innerWidth;
 var height = window.innerHeight;
-width = 3000;
-// height = 2000;
+width = width > 1920 ? 1920 : width;
+height = height > 1080 ? 1080 : height;
 
 var stage = new Konva.Stage({
   id: 'stage',
   container: 'container',
   width: width,
   height: height,
-  draggable: false,
+  draggable: true,
 });
+stage.scaleX(0.3);
+stage.scaleY(0.3);
+// stage.x(50);
+// stage.y(50);
 
 var layer_grid = new Konva.Layer();
 
@@ -40,16 +46,12 @@ stage.add(layer_grid);
 var layer = new Konva.Layer();
 stage.add(layer);
 
-// stage.x((width - stage.width()) / 2);
-stage.scaleX(0.35);
-stage.scaleY(0.35);
-stage.x(50);
-stage.y(50);
-
 // INIT VARIABLES
 let current_stage_width = 0;
+let current_stage_height = 0;
 let current_y_pos = 0;
 let currently_selected_vertical_section;
+let current_selection_highlight;
 let last_clicked_element;
 let modal_operation;
 
@@ -64,9 +66,43 @@ $(document).ready(function () {
   $('#FP').prop('checked', true);
 
   stage.on('mousedown', function (e) {
-    // last_clicked_element = e.currentTarget;
-    console.log(last_clicked_element.id());
-    console.log(last_clicked_element.parent.id());
+    if (e.target.id() == 'stage') last_clicked_element = null;
+
+    if (
+      current_selection_highlight &&
+      (last_clicked_element == null ||
+        last_clicked_element.id() != e.target.id())
+    ) {
+      current_selection_highlight.remove();
+    }
+
+    if (last_clicked_element) {
+      // console.log(last_clicked_element.id());
+      // console.log(last_clicked_element.parent.id());
+
+      let width = last_clicked_element.attrs.width;
+      let height = last_clicked_element.attrs.height;
+      let x = last_clicked_element.parent.attrs.x;
+      let y = last_clicked_element.attrs.y;
+      let type = last_clicked_element.attrs.type;
+
+      console.info(`type: ${type}`);
+      // console.info(`width: ${width}`);
+      // console.info(`height: ${height}`);
+      // console.info(`x: ${x}`);
+      // console.info(`y: ${y}`);
+
+      current_selection_highlight = drawCurrentSelection(
+        'selection',
+        x,
+        y,
+        width,
+        height
+      );
+      layer.add(current_selection_highlight);
+
+      toggleEditMenu(type, width, height);
+    }
   });
 
   $('#vertical-section .button-add').on('click', function () {
@@ -119,11 +155,7 @@ $(document).ready(function () {
     currently_selected_vertical_section = vertical_section;
 
     current_stage_width += parseInt(vertical_section.width());
-
-    // console.info(current_stage_width);
-
-    // UPDATE DEFAULT WIDTH VALUES FOR BUSBAR
-    // $('#busbar-unit .input-width').val(vertical_section.width());
+    current_stage_height = parseInt(vertical_section.height());
   });
 
   $('#busbar-unit .button-add').on('click', function () {
@@ -467,9 +499,11 @@ $(document).ready(function () {
   });
 
   $('#save').on('click', function (e) {
-    if (steps_array.length > 0) {
-      downloadObjectAsJson(steps_array, `save-${Date.now()}.gad`);
-    }
+    // if (steps_array.length > 0) {
+    //   downloadObjectAsJson(steps_array, `save-${Date.now()}.gad`);
+    // }
+    var dataURL = stage.toDataURL({ pixelRatio: 1 });
+    downloadURI(dataURL, 'stage.png');
   });
 
   function downloadObjectAsJson(exportObj, exportName) {
@@ -483,6 +517,24 @@ $(document).ready(function () {
     downloadAnchorNode.click();
     downloadAnchorNode.remove();
   }
+
+  function downloadURI(uri, name) {
+    var link = document.createElement('a');
+    link.download = name;
+    link.href = uri;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  document.getElementById('save').addEventListener(
+    'click',
+    function () {
+      var dataURL = stage.toDataURL({ pixelRatio: 3 });
+      downloadURI(dataURL, 'stage.png');
+    },
+    false
+  );
 
   $('#add').on('mouseover', function (e) {
     $('.tooltip-text').html('ADD');
@@ -526,15 +578,15 @@ $(document).ready(function () {
   });
 
   // TRIGGERS
-  // $('#vertical-section .button-add').trigger('click');
-  // $('#busbar-unit .button-add').trigger('click');
-  // $('#acb-unit .button-add').trigger('click');
-  // $('#control-metering-unit .button-add').trigger('click');
+  $('#vertical-section .button-add').trigger('click');
+  $('#busbar-unit .button-add').trigger('click');
+  $('#acb-unit .button-add').trigger('click');
+  $('#control-metering-unit .button-add').trigger('click');
 
-  // $('#vertical-section .button-add').trigger('click');
-  // $('#busbar-unit .button-add').trigger('click');
-  // $('#acb-unit .button-add').trigger('click');
-  // $('#control-metering-unit .button-add').trigger('click');
+  $('#vertical-section .button-add').trigger('click');
+  $('#busbar-unit .button-add').trigger('click');
+  $('#acb-unit .button-add').trigger('click');
+  $('#control-metering-unit .button-add').trigger('click');
 
   // $('#vertical-section .button-add').trigger('click');
   // $('#busbar-unit .button-add').trigger('click');

@@ -95,7 +95,7 @@ export const createVacantUnit = (
     y: y,
     width: width,
     height: height,
-    rotation: 0,
+    type: 'Vacant',
   });
 
   var rect = new Konva.Rect({
@@ -167,7 +167,7 @@ export const createControlMeteringUnit = (
     y: y,
     width: width,
     height: height,
-    rotation: 0,
+    type: 'ControlMetering',
   });
 
   var rect = new Konva.Rect({
@@ -243,7 +243,7 @@ export const createMCCBUnit = (
     y: y,
     width: width,
     height: height,
-    rotation: 0,
+    type: 'MCCB',
   });
 
   var rect = new Konva.Rect({
@@ -345,7 +345,7 @@ export const createACBUnit = (
     y: y,
     width: width,
     height: height,
-    rotation: 0,
+    type: 'ACB',
   });
 
   var rect = new Konva.Rect({
@@ -431,7 +431,7 @@ export const createBusbarUnit = (
     y: y,
     width: width,
     height: height,
-    rotation: 0,
+    type: 'Busbar',
   });
 
   var rect = new Konva.Rect({
@@ -531,33 +531,89 @@ export const createVerticalSection = (
   return group;
 };
 
+export const drawCurrentSelection = (name, x, y, width, height) => {
+  var group = new Konva.Group({
+    id: name,
+    x: x,
+    y: y,
+    width: width,
+    height: height,
+  });
+
+  var rect = new Konva.Rect({
+    x: 0,
+    y: 0,
+    width: width,
+    height: height,
+    // fill: 'black',
+    stroke: 'limegreen',
+    strokeWidth: 10,
+    // opacity: 0.05,
+  });
+  rect.dashEnabled(false);
+  rect.dash([20, 20]);
+
+  group.add(rect);
+
+  return group;
+};
+
+export const toggleEditMenu = (type, width, height) => {
+  switch (type) {
+    case 'Busbar':
+      $(`#${type}`).trigger('click');
+      $('#busbar-unit .input-width').val(width);
+      $('#busbar-unit .input-height').val(height);
+
+    case 'ACB':
+      $(`#${type}`).trigger('click');
+      $('#acb-unit .input-width').val(width);
+      $('#acb-unit .input-height').val(height);
+
+    case 'MCCB':
+      $(`#${type}`).trigger('click');
+      $('#mccb-unit .input-width').val(width);
+      $('#mccb-unit .input-height').val(height);
+
+    case 'ControlMetering':
+      $(`#${type}`).trigger('click');
+      $('#control-metering-unit .input-width').val(width);
+      $('#control-metering-unit .input-height').val(height);
+
+    case 'Vacant':
+      $(`#${type}`).trigger('click');
+      $('#vacant-unit .input-width').val(width);
+      $('#vacant-unit .input-height').val(height);
+  }
+};
+
 export const drawGrid = (alpha) => {
   var groupGrid = new Konva.Group({
-    x: -200,
-    y: -200,
+    x: 0,
+    y: 0,
     rotation: 0,
   });
 
-  var xCount = 80;
-  for (var x = 1; x < xCount; x++) {
+  var xCount = 65;
+  for (var x = 0; x < xCount; x++) {
     var gridLine = new Konva.Line({
-      points: [x * 100, 0, x * 100, 4000],
+      points: [x * 100, 0, x * 100, 3600],
       stroke: 'gray',
       opacity: alpha,
-      strokeWidth: 2,
+      strokeWidth: 3,
       lineCap: 'round',
       lineJoin: 'round',
     });
 
     groupGrid.add(gridLine);
   }
-  var yCount = 40;
-  for (var y = 1; y < yCount; y++) {
+  var yCount = 37;
+  for (var y = 0; y < yCount; y++) {
     var gridLine = new Konva.Line({
-      points: [0, y * 100, 7000, y * 100],
+      points: [0, y * 100, 6400, y * 100],
       stroke: 'gray',
       opacity: alpha,
-      strokeWidth: 2,
+      strokeWidth: 3,
       lineCap: 'round',
       lineJoin: 'round',
     });
@@ -565,28 +621,28 @@ export const drawGrid = (alpha) => {
     groupGrid.add(gridLine);
   }
 
-  xCount = 800;
-  for (var x = 1; x < xCount; x++) {
+  xCount = 256;
+  for (var x = 0; x < xCount; x++) {
     // console.log(x * 10);
     var gridLine = new Konva.Line({
-      points: [x * 10, 0, x * 10, 4000],
+      points: [x * 25, 0, x * 25, 3600],
       stroke: 'gray',
-      opacity: alpha,
-      strokeWidth: 1,
+      opacity: alpha / 2,
+      strokeWidth: 3,
       lineCap: 'round',
       lineJoin: 'round',
     });
 
     groupGrid.add(gridLine);
   }
-  yCount = 400;
-  for (var y = 1; y < yCount; y++) {
+  yCount = 144;
+  for (var y = 0; y < yCount; y++) {
     // console.log(y * 10);
     var gridLine = new Konva.Line({
-      points: [0, y * 10, 8000, y * 10],
+      points: [0, y * 25, 6400, y * 25],
       stroke: 'gray',
-      opacity: alpha,
-      strokeWidth: 1,
+      opacity: alpha / 2,
+      strokeWidth: 3,
       lineCap: 'round',
       lineJoin: 'round',
     });
