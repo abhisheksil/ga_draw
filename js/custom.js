@@ -21,13 +21,13 @@ var width = window.innerWidth;
 var height = window.innerHeight;
 width = width > 1920 ? 1920 : width;
 height = height > 1080 ? 1080 : height;
-
+// 6400x3600
 var stage = new Konva.Stage({
   id: 'stage',
   container: 'container',
   width: width,
   height: height,
-  draggable: true,
+  draggable: false,
 });
 stage.scaleX(0.3);
 stage.scaleY(0.3);
@@ -65,43 +65,63 @@ $(document).ready(function () {
   // SET FP AS DEFAULT FOR MCCB
   $('#FP').prop('checked', true);
 
-  stage.on('mousedown', function (e) {
-    if (e.target.id() == 'stage') last_clicked_element = null;
-
-    if (
-      current_selection_highlight &&
-      (last_clicked_element == null ||
-        last_clicked_element.id() != e.target.id())
-    ) {
-      current_selection_highlight.remove();
+  window.addEventListener('keydown', function (e) {
+    if (e.keyCode == 16 && !stage.draggable()) {
+      stage.draggable(true);
+      console.log(stage.draggable());
+      $('#container').css('cursor', 'grab');
     }
+  });
 
-    if (last_clicked_element) {
-      // console.log(last_clicked_element.id());
-      // console.log(last_clicked_element.parent.id());
+  window.addEventListener('keyup', function (e) {
+    if (e.keyCode == 16) {
+      stage.draggable(false);
+      console.log(stage.draggable());
+      $('#container').css('cursor', 'default');
+    }
+  });
 
-      let width = last_clicked_element.attrs.width;
-      let height = last_clicked_element.attrs.height;
-      let x = last_clicked_element.parent.attrs.x;
-      let y = last_clicked_element.attrs.y;
-      let type = last_clicked_element.attrs.type;
+  stage.on('dragmove', function (e) {});
 
-      console.info(`type: ${type}`);
-      // console.info(`width: ${width}`);
-      // console.info(`height: ${height}`);
-      // console.info(`x: ${x}`);
-      // console.info(`y: ${y}`);
+  stage.on('mousedown', function (e) {
+    if (!stage.draggable()) {
+      if (e.target.id() == 'stage') last_clicked_element = null;
 
-      current_selection_highlight = drawCurrentSelection(
-        'selection',
-        x,
-        y,
-        width,
-        height
-      );
-      layer.add(current_selection_highlight);
+      if (
+        current_selection_highlight &&
+        (last_clicked_element == null ||
+          last_clicked_element.id() != e.target.id())
+      ) {
+        current_selection_highlight.remove();
+      }
 
-      toggleEditMenu(type, width, height);
+      if (last_clicked_element) {
+        // console.log(last_clicked_element.id());
+        // console.log(last_clicked_element.parent.id());
+
+        let width = last_clicked_element.attrs.width;
+        let height = last_clicked_element.attrs.height;
+        let x = last_clicked_element.parent.attrs.x;
+        let y = last_clicked_element.attrs.y;
+        let type = last_clicked_element.attrs.type;
+
+        console.info(`type: ${type}`);
+        // console.info(`width: ${width}`);
+        // console.info(`height: ${height}`);
+        // console.info(`x: ${x}`);
+        // console.info(`y: ${y}`);
+
+        current_selection_highlight = drawCurrentSelection(
+          'selection',
+          x,
+          y,
+          width,
+          height
+        );
+        layer.add(current_selection_highlight);
+
+        toggleEditMenu(type, width, height);
+      }
     }
   });
 
@@ -578,15 +598,15 @@ $(document).ready(function () {
   });
 
   // TRIGGERS
-  $('#vertical-section .button-add').trigger('click');
-  $('#busbar-unit .button-add').trigger('click');
-  $('#acb-unit .button-add').trigger('click');
-  $('#control-metering-unit .button-add').trigger('click');
+  // $('#vertical-section .button-add').trigger('click');
+  // $('#busbar-unit .button-add').trigger('click');
+  // $('#acb-unit .button-add').trigger('click');
+  // $('#control-metering-unit .button-add').trigger('click');
 
-  $('#vertical-section .button-add').trigger('click');
-  $('#busbar-unit .button-add').trigger('click');
-  $('#acb-unit .button-add').trigger('click');
-  $('#control-metering-unit .button-add').trigger('click');
+  // $('#vertical-section .button-add').trigger('click');
+  // $('#busbar-unit .button-add').trigger('click');
+  // $('#acb-unit .button-add').trigger('click');
+  // $('#control-metering-unit .button-add').trigger('click');
 
   // $('#vertical-section .button-add').trigger('click');
   // $('#busbar-unit .button-add').trigger('click');

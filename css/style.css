@@ -275,3 +275,11 @@ input {
   margin: 0 6px 0 12px;
   cursor: pointer;
 }
+
+.shortcuts {
+  width: 100%;
+  max-width: 1920px;
+  font-family: 'Roboto Condensed';
+  font-size: 12px;
+  padding: 2px;
+}

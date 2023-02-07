@@ -589,15 +589,16 @@ export const toggleEditMenu = (type, width, height) => {
 
 export const drawGrid = (alpha) => {
   var groupGrid = new Konva.Group({
-    x: 0,
-    y: 0,
+    x: -3200,
+    y: -1800,
     rotation: 0,
   });
 
-  var xCount = 65;
+  // var xCount = 65;
+  var xCount = 129;
   for (var x = 0; x < xCount; x++) {
     var gridLine = new Konva.Line({
-      points: [x * 100, 0, x * 100, 3600],
+      points: [x * 100, 0, x * 100, 7200],
       stroke: 'gray',
       opacity: alpha,
       strokeWidth: 3,
@@ -607,10 +608,11 @@ export const drawGrid = (alpha) => {
 
     groupGrid.add(gridLine);
   }
-  var yCount = 37;
+  // var yCount = 37;
+  var yCount = 73;
   for (var y = 0; y < yCount; y++) {
     var gridLine = new Konva.Line({
-      points: [0, y * 100, 6400, y * 100],
+      points: [0, y * 100, 12800, y * 100],
       stroke: 'gray',
       opacity: alpha,
       strokeWidth: 3,
@@ -621,11 +623,12 @@ export const drawGrid = (alpha) => {
     groupGrid.add(gridLine);
   }
 
-  xCount = 256;
+  // xCount = 256;
+  xCount = 512;
   for (var x = 0; x < xCount; x++) {
     // console.log(x * 10);
     var gridLine = new Konva.Line({
-      points: [x * 25, 0, x * 25, 3600],
+      points: [x * 25, 0, x * 25, 7200],
       stroke: 'gray',
       opacity: alpha / 2,
       strokeWidth: 3,
@@ -635,11 +638,12 @@ export const drawGrid = (alpha) => {
 
     groupGrid.add(gridLine);
   }
-  yCount = 144;
+  // yCount = 144;
+  yCount = 288;
   for (var y = 0; y < yCount; y++) {
     // console.log(y * 10);
     var gridLine = new Konva.Line({
-      points: [0, y * 25, 6400, y * 25],
+      points: [0, y * 25, 12800, y * 25],
       stroke: 'gray',
       opacity: alpha / 2,
       strokeWidth: 3,
